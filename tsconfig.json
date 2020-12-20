@@ -22,5 +22,10 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "paths": {
+      "http://*": ["../../../.deno/deps/http/*"],
+      "https://*": ["../../../.deno/deps/https/*"],
+      "*.ts": ["*"]
+  }
 }
