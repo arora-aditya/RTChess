@@ -25,6 +25,7 @@ export const normalizeCss = css`
 
   body {
     margin: 0;
+    font-family: 'Source Code Pro', monospace;
   }
 
   /**

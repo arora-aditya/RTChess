@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { MESSAGE_SENDER } from '../../types/MessageSenderEnum';
 import { ChatMessageType } from '../../types/ChatMessageType';

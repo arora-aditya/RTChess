@@ -45,6 +45,11 @@ export const PeerConnectionProvider: FC = ({ children }) => {
   const peerConnectionRef = useRef<CreatePeerConnectionResponse>();
 
   const onChannelOpen = useCallback(() => setIsConnected(true), [setIsConnected]);
+  
+  const onDisconnect = useCallback(() => {
+    setIsConnected(false);
+    setMode(undefined);
+  }, [setIsConnected, setMode])
 
   const onMessageReceived = useCallback((messageString: string) => {
     try {
@@ -63,6 +68,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
       iceServers,
       onMessageReceived,
       onChannelOpen,
+      onDisconnect,
     });
 
     setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
@@ -79,8 +85,8 @@ export const PeerConnectionProvider: FC = ({ children }) => {
         remoteDescription: Base64.decode(connectionDescription.description),
         onMessageReceived,
         onChannelOpen,
+        onDisconnect,
       });
-      console.log('peerConnectionRef.current.localDescription', peerConnectionRef.current.localDescription);
       setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
     },
     [mode, setMode, onMessageReceived, onChannelOpen, setLocalDescription],

@@ -11,6 +11,7 @@ import { ConnectionDescription } from '../../module/PeerConnection/PeerConnectio
 
 const ErrorMessage = styled.div``;
 const StyledTextArea = styled(TextArea)`
+  margin-bottom: 1vh;
 `;
 const ConnectButton = styled(Button)`
 `;
@@ -25,19 +26,18 @@ const Form = styled.form`
   align-items: center;
 `;
 const Instruction = styled.div`
-  font-size: 10px;
   color: black;
-  margin-bottom: 4px;
+  margin-bottom: 1vh;
+  margin-top: 1vh;
 `;
 const Step = styled.div`
   position: absolute;
   top: 8px;
   left: 8px;
-  width: 18px;
-  height: 18px;
+  width: 2vh;
+  height: 2vh;
   background-color: black;
   color: white;
-  font-size: 10px;
   border-radius: 50%;
   line-height: 1;
   display: flex;
@@ -47,7 +47,7 @@ const Step = styled.div`
 
   > span {
     display: inline-block;
-    transform: translate(0.5px, -0.5px);
+    // transform: translate(-0.2vh, -0.2vh);
   }
 `;
 const Card = styled.div`
@@ -57,13 +57,15 @@ const Card = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 24px;
-  border: 1px solid black;
   border-top: none;
 `;
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
+  font-size: 1.5vh;
   flex-direction: column;
+  justify-content: space-around;
 `;
 
 export interface HostProps {
@@ -113,7 +115,7 @@ export const Host: FC = memo(function Host() {
         </Step>
         <Instruction>Send this code to your buddy:</Instruction>
         <StyledTextArea ref={copyTextAreaRef} value={encodedConnectionDescription} readOnly />
-        <CopyButton onClick={handleCopyClick}>Copy to clipboard</CopyButton>
+        <Button onClick={handleCopyClick}>Copy to clipboard</Button>
       </Card>
       <Card>
         <Step>
@@ -126,7 +128,7 @@ export const Host: FC = memo(function Host() {
             onChange={handleRemoteConnectionDescriptionInputChange}
             placeholder="Paste an answer code"
           />
-          <ConnectButton type="submit">Connect</ConnectButton>
+          <Button type="submit">Connect</Button>
         </Form>
         {!!error && <ErrorMessage>{error}</ErrorMessage>}
       </Card>

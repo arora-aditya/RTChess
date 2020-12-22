@@ -9,16 +9,15 @@ import { useChat } from '../../module/useChat/useChat';
 import { ConnectionDescription } from '../../module/PeerConnection/PeerConnection';
 
 const CopyButton = styled(Button)`
-  width: 70%;
-  margin-top: 4px;
+  margin-top: 1vh;
 `;
 const StyledTextArea = styled(TextArea)`
   width: 70%;
 `;
 const Instruction = styled.div`
-  font-size: 10px;
+  font-size: 1.5vh;
   color: black;
-  margin-bottom: 4px;
+  margin-bottom: 1vh;
 `;
 const Card = styled.div`
   width: 100%;
@@ -26,12 +25,13 @@ const Card = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 24px;
-  border: 1px solid black;
-  border-top: none;
 `;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `;
 
 export const Slave: FC = memo(function Slave() {
@@ -50,7 +50,7 @@ export const Slave: FC = memo(function Slave() {
   return (
     <Container>
       <Card>
-        <Instruction>Send back this code to your buddy:</Instruction>
+        <Instruction>Send back this code back to your friend</Instruction>
         <StyledTextArea ref={copyTextAreaRef} value={encodedConnectionDescription} readOnly />
         <CopyButton onClick={handleCopyClick}>Copy to clipboard</CopyButton>
       </Card>

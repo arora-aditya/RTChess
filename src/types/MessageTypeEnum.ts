@@ -1,5 +1,4 @@
 export enum MESSAGE_TYPE {
   TEXT = 'TEXT',
-  FILE_INFO = 'FILE_INFO',
-  FILE_CHUNK = 'FILE_CHUNK',
+  MOVE = 'MOVE',
 }

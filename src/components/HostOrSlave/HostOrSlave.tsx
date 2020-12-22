@@ -31,27 +31,7 @@ const Card = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const Or = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 20px;
-  height: 20px;
-  font-size: 10px;
-  background-color: black;
-  color: white;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
 
-  > span {
-    transform: translate(0.5px, -1.5px);
-    line-height: 1;
-  }
-`;
 const CardContainer = styled.div`
   position: relative;
   display: flex;
@@ -74,6 +54,47 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const ModalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-around;
+`;
+
+const ModalHalf = styled.div`
+  font-size: 1.5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  button {
+    margin: 1vh;
+    width: fit-content;
+  }
+  hr {
+    width: 90%;
+  }
+  textarea {
+  }
+`;
+
+const Or = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 4vh;
+  height: 4vh;
+  font-size: 1.5vh;
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+  transform: translate(0px, -2.5vh);
+  > span {
+    transform: translate(0.5px, -1.5px);
+    line-height: 1;
+  }
+`
 
 export const HostOrSlave: FC = memo(function HostOrSlave() {
   const { startAsHost, startAsSlave } = useChat();
@@ -107,26 +128,24 @@ export const HostOrSlave: FC = memo(function HostOrSlave() {
   };
 
   return (
-    <Container>
-      <CardContainer>
-        <Card>
-          <HostButton onClick={handleHostBtnClick}>New chat</HostButton>
-        </Card>
-        <Card>
-          <Form onSubmit={handleSlaveFormSubmit}>
-            <InvitationTextArea
-              value={connectionDescription}
-              onChange={handleConnectionDescriptionInputChange}
-              placeholder="Invitation code here..."
-            />
+      <ModalContainer>
+        <ModalHalf>
+          <Button onClick={handleHostBtnClick}>Start new</Button>
+        </ModalHalf>
+        <ModalHalf>
+          <hr />  
+          <Or><span>or</span></Or>
+        </ModalHalf>
+        <ModalHalf>
+        <Form onSubmit={handleSlaveFormSubmit}>
+          <InvitationTextArea 
+            value={connectionDescription}
+            onChange={handleConnectionDescriptionInputChange}
+            placeholder="Paste invitation code here..."/>
             {!!error && <ErrorMessage>{error}</ErrorMessage>}
-            <SlaveButton type="submit">Join a chat</SlaveButton>
+            <SlaveButton type="submit">Join</SlaveButton>
           </Form>
-        </Card>
-        <Or>
-          <span>or</span>
-        </Or>
-      </CardContainer>
-    </Container>
+        </ModalHalf>
+      </ModalContainer>
   );
 });

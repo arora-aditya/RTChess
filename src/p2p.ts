@@ -6,6 +6,7 @@ export interface CreatePeerConnectionProps {
   iceServers?: RTCIceServer[];
   onChannelOpen: () => any;
   onMessageReceived: (message: string) => any;
+  onDisconnect: () => any;
 }
 
 export interface CreatePeerConnectionResponse {
@@ -28,6 +29,7 @@ export function createPeerConnection({
   ],
   onChannelOpen,
   onMessageReceived,
+  onDisconnect,
 }: CreatePeerConnectionProps): Promise<CreatePeerConnectionResponse> {
   const peerConnection = new RTCPeerConnection({
     iceServers,
@@ -95,6 +97,13 @@ export function createPeerConnection({
         });
       }
     };
+    
+    peerConnection.oniceconnectionstatechange = function() {
+      if(peerConnection.iceConnectionState == 'disconnected') {
+          onDisconnect();
+      }
+    }
+
 
     if (!remoteDescription) {
       setupChannelAsAHost();

@@ -1,8 +1,8 @@
 import { MESSAGE_SENDER } from './MessageSenderEnum';
 import { MESSAGE_TYPE } from './MessageTypeEnum';
-import { MessagePayloadTextType, MessagePayloadFileInfoType, MessagePayloadFileChunkType } from './MessagePayloadType';
+import { MessagePayloadTextType } from './MessagePayloadType';
 
-export type MessagePayload = MessagePayloadTextType | MessagePayloadFileInfoType | MessagePayloadFileChunkType;
+export type MessagePayload = MessagePayloadTextType;
 export type Message = {
   id: string;
   sender: MESSAGE_SENDER;
@@ -10,9 +10,16 @@ export type Message = {
   timestamp: number;
   payload: MessagePayload;
 };
+
 export type MessageTextType = Message & {
   type: MESSAGE_TYPE.TEXT;
   payload: MessagePayloadTextType;
 };
+
+export type MessageMoveType = Message & {
+  type: MESSAGE_TYPE.MOVE;
+  payload: MessagePayloadTextType;
+};
+
 
 export type MessageType = MessageTextType;
