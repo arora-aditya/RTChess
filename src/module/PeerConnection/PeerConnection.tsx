@@ -72,7 +72,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
     });
 
     setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
-  }, [mode, setMode, onMessageReceived, onChannelOpen, setLocalDescription]);
+  }, [mode, setMode, onMessageReceived, onChannelOpen, onDisconnect, setLocalDescription]);
 
   const startAsSlave = useCallback(
     async (connectionDescription: ConnectionDescription) => {
@@ -89,7 +89,7 @@ export const PeerConnectionProvider: FC = ({ children }) => {
       });
       setLocalDescription(Base64.encode(peerConnectionRef.current.localDescription));
     },
-    [mode, setMode, onMessageReceived, onChannelOpen, setLocalDescription],
+    [mode, setMode, onMessageReceived, onChannelOpen, onDisconnect, setLocalDescription],
   );
 
   const setRemoteConnectionDescription = useCallback((connectionDescription: ConnectionDescription) => {

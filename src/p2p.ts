@@ -99,7 +99,7 @@ export function createPeerConnection({
     };
     
     peerConnection.oniceconnectionstatechange = function() {
-      if(peerConnection.iceConnectionState == 'disconnected') {
+      if(peerConnection.iceConnectionState === 'disconnected') {
           onDisconnect();
       }
     }

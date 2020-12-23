@@ -11,9 +11,7 @@ import { ConnectionDescription } from '../../module/PeerConnection/PeerConnectio
 const InvitationTextArea = styled(TextArea)`
   width: 100px;
 `;
-const HostButton = styled(Button)`
-  width: 100px;
-`;
+
 const SlaveButton = styled(Button)`
   width: 100px;
   margin-top: 4px;
@@ -24,35 +22,6 @@ const Form = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CardContainer = styled.div`
-  position: relative;
-  display: flex;
-  width: 100%;
-  height: 200px;
-  align-items: stretch;
-  border: 1px solid black;
-  border-top: none;
-
-  > ${Card} {
-    width: 100%;
-    border-left: 1px solid black;
-
-    &:first-child {
-      border-left: none;
-    }
-  }
-`;
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 const ModalContainer = styled.div`

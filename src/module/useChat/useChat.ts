@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import shortid from 'shortid';
 
-import { MessageType, MessageTextType } from '../../types/MessageType';
+import { MessageType, MessageTextType, MessageChessType } from '../../types/MessageType';
 import { usePeerConnection, usePeerConnectionSubscription } from '../PeerConnection/PeerConnection';
 import { MESSAGE_SENDER } from '../../types/MessageSenderEnum';
 import { MESSAGE_TYPE } from '../../types/MessageTypeEnum';
@@ -41,6 +41,21 @@ export const useChat = () => {
     },
     [sendMessage, sendChatMessage],
   );
+  
+  const sendChessMessage = useCallback(
+    (fen: string) => {
+      const message: MessageChessType = {
+        id: shortid.generate(),
+        sender: MESSAGE_SENDER.STRANGER,
+        type: MESSAGE_TYPE.CHESS,
+        timestamp: +new Date(),
+        payload: fen,
+      };
+
+      sendMessage(message);
+    },
+    [sendMessage],
+  );
 
   return {
     mode,
@@ -51,11 +66,12 @@ export const useChat = () => {
     startAsSlave,
     setRemoteConnectionDescription,
     sendTextChatMessage,
+    sendChessMessage,
   };
 };
 
 // This hook should be used only in one place since it's connecting Chat to PeerConnection
-export const useChatPeerConnectionSubscription = () => {
+export const useChatPeerConnectionSubscription = (setFen: (fen: string) => any) => {
   const { sendChatMessage } = useChatMessages();
 
   const onMessageReceived = useCallback(
@@ -67,9 +83,11 @@ export const useChatPeerConnectionSubscription = () => {
           timestamp: message.timestamp,
           text: message.payload,
         });
+      } else if (message.type === MESSAGE_TYPE.CHESS) {
+        setFen(message.payload);
       }
     },
-    [sendChatMessage],
+    [sendChatMessage, setFen],
   );
 
   usePeerConnectionSubscription(onMessageReceived);

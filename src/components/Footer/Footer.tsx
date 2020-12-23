@@ -1,9 +1,5 @@
-import React, { useCallback, memo, FC, useRef, useState } from 'react';
+import React, { memo, FC } from 'react';
 import styled from 'styled-components';
-
-import { Button } from '../Button/Button';
-
-import logo from '../../assets/logo.svg';
 
 const CenteredFooter = styled.div`
 width: 100%;
@@ -24,7 +20,7 @@ a {
 export const Footer: FC = memo(function Footer() {
   return (
     <CenteredFooter>
-      <span>Made with WebRTC and 💖 by <a href="https://arora-aditya.com" target="_blank">Aditya Arora</a></span>
+      <span>Made with WebRTC and 💖 by <a href="https://arora-aditya.com" target="_blank" rel="noreferrer">Aditya Arora</a></span>
     </CenteredFooter>
   );
 });

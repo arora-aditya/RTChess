@@ -28,7 +28,7 @@ export function Header({
 }: HeaderProps) {
   return (
     <LogoPlay>
-      <a href="/"><img src={logo} /></a>
+      <a href="/"><img src={logo} alt="logo"/></a>
       <Button hide={hideButton} onClick={onClickButton}>Play Now</Button>
     </LogoPlay>
   );

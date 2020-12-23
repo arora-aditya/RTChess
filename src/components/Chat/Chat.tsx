@@ -15,6 +15,16 @@ const MessageForm = styled.form`
 const MessagesInnerContainer = styled.div`
 `;
 const MessagesContainer = styled.div`
+
+  overflow: auto; 
+  display: flex; 
+  max-height: 10vh;
+  width: 80vw;
+  @media (min-width: 768px) {
+    max-height: 550px;
+    width: 20vw;
+  }
+  flex-direction: column-reverse;
 `;
 const Container = styled.div`
 `;

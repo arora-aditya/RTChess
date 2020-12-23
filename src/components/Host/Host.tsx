@@ -13,12 +13,7 @@ const ErrorMessage = styled.div``;
 const StyledTextArea = styled(TextArea)`
   margin-bottom: 1vh;
 `;
-const ConnectButton = styled(Button)`
-`;
-const CopyButton = styled(Button)`
-  width: 70%;
-  margin-top: 4px;
-`;
+
 const Form = styled.form`
   width: 100%;
   display: flex;
@@ -128,9 +123,9 @@ export const Host: FC = memo(function Host() {
             onChange={handleRemoteConnectionDescriptionInputChange}
             placeholder="Paste an answer code"
           />
+          {!!error && <ErrorMessage>{error}</ErrorMessage>}
           <Button type="submit">Connect</Button>
         </Form>
-        {!!error && <ErrorMessage>{error}</ErrorMessage>}
       </Card>
     </Container>
   );

@@ -16,10 +16,10 @@ export type MessageTextType = Message & {
   payload: MessagePayloadTextType;
 };
 
-export type MessageMoveType = Message & {
-  type: MESSAGE_TYPE.MOVE;
+export type MessageChessType = Message & {
+  type: MESSAGE_TYPE.CHESS;
   payload: MessagePayloadTextType;
 };
 
 
-export type MessageType = MessageTextType;
+export type MessageType = MessageTextType | MessageChessType;
