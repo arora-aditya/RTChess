@@ -9,7 +9,7 @@ import { useChat } from '../../module/useChat/useChat';
 import { ConnectionDescription } from '../../module/PeerConnection/PeerConnection';
 
 const InvitationTextArea = styled(TextArea)`
-  width: 100px;
+  width: 100%;
 `;
 
 const SlaveButton = styled(Button)`

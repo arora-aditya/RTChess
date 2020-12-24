@@ -6,6 +6,9 @@ import { ChatMessageType } from '../../types/ChatMessageType';
 
 const Text = styled.div``;
 const Header = styled.div`
+  font-weight: bold;
+  margin-top: 0.5vh;
+  margin-bottom: 0.25vh;
 `;
 const Message = styled.div`
 `;

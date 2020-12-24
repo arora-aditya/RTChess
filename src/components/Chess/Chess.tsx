@@ -1,22 +1,15 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import Chessboard from 'chessboardjsx';
 import useValidator from '../../module/useValidator/useValidator';
-import {ChessInstance, Square} from 'chess.js';
-import FenParser from '@chess-fu/fen-parser';
+import * as ChessJS from "chess.js";
 import { Chat } from '../Chat/Chat';
 import { useChat } from '../../module/useChat/useChat';
 
 interface ChessBoardProps {
-    game: ChessInstance, 
     fen: string, 
     setFen:React.Dispatch<React.SetStateAction<string>>,
-    position: string , 
-    onDropOption?: ({ sourceSquare, targetSquare }: { sourceSquare: Square; targetSquare: Square; }) => void, 
-    onClickOption?: (square: Square) => void,
-    options:Boolean ,
     orientation: "white" | "black",
-    botmatch?: boolean,
 }
 
 const Container = styled.div`
@@ -39,12 +32,14 @@ const BoardWrapper = styled.div`
   justify-content: space-around;
 `;
 
+const Chess = typeof ChessJS === "function" ? ChessJS : ChessJS.Chess;
+const game = new Chess();
 export function ChessBoard({
-   game, fen, setFen, position = "start", onDropOption, onClickOption, options = false, orientation
-}: ChessBoardProps
-    ){
-    const { sendChessMessage } = useChat();
-    game.load(position);
+   fen, setFen, orientation
+}: ChessBoardProps){
+    const GAME_START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    const { sendChessMessage, sendTextChatMessage } = useChat();
+    const [canRestart, setCanRestart] = useState(false);
     const { 
          onMouseOverSquare, 
          onMouseOutSquare,
@@ -55,11 +50,11 @@ export function ChessBoard({
          onDrop
        } = useValidator(game, fen, setFen, orientation); 
 
-    const [width, setWidth] = React.useState<number>(window.innerWidth);
+    const [width, setWidth] = useState<number>(window.innerWidth);
     
     const send = useCallback(() => {
-      sendChessMessage(position);
-    }, [sendChessMessage, position]);
+      sendChessMessage(fen);
+    }, [sendChessMessage, fen]);
     
     useEffect(()=>{
        window.onresize = () => {
@@ -73,12 +68,39 @@ export function ChessBoard({
         boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`,
     }
     
+    useEffect(() => {
+      game.load(fen);
+    }, [fen])
+    
     useEffect(()=>{
-      const parsed = new FenParser(position);
-      if(orientation[0] !== parsed.turn){
-        send()
+      send();
+    }, [fen, send])
+    
+    const doRestart = () => {
+      setFen(GAME_START_FEN);
+      setCanRestart(false);
+      sendTextChatMessage(`Game restarted`);
+    }
+    
+    useEffect(() => {
+      if(fen === GAME_START_FEN){
+        setCanRestart(false);
       }
-    }, [position, orientation, send])
+    }, [fen])
+    
+    useEffect(() => {
+      const notMyTurn = orientation[0] !== game.turn()
+      if(game.game_over()){
+        if(game.in_checkmate() && notMyTurn){
+          sendTextChatMessage(`Game over ${game.turn() === "w"? "white" : "black"} lost`);
+        } else if((game.in_draw() || game.in_threefold_repetition() || game.in_stalemate() || game.insufficient_material()) && notMyTurn){
+          sendTextChatMessage(`Game over, it was a draw!`);
+        }
+        if(fen !== GAME_START_FEN){
+          setCanRestart(true);
+        }
+      }
+    }, [fen, sendTextChatMessage])
     
     return (
       <Container>
@@ -87,7 +109,7 @@ export function ChessBoard({
             id="humanvshuman"
             boardStyle={boardStyle} 
             calcWidth={resizeBoard} 
-            position={position}
+            position={fen}
             onDrop={onDrop}
             onMouseOverSquare={onMouseOverSquare}
             onMouseOutSquare={onMouseOutSquare} 
@@ -98,7 +120,7 @@ export function ChessBoard({
             transitionDuration={0}
             orientation={orientation}
           />
-          <Chat />
+          <Chat canRestart={canRestart} doRestart={doRestart}/>
         </BoardWrapper>
       </Container>
     )

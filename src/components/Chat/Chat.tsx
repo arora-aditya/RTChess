@@ -1,4 +1,4 @@
-import React, { useCallback, memo, FC, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { useChat } from '../../module/useChat/useChat';
@@ -7,15 +7,20 @@ import { TextArea } from '../TextArea/TextArea';
 import { Button } from '../Button/Button';
 
 const MessageButton = styled(Button)`
+  max-width: 10vh;
+  margin-top: 1vh;
+  align-self: flex-end;
 `;
 const MessageTextArea = styled(TextArea)`
 `;
 const MessageForm = styled.form`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 `;
 const MessagesInnerContainer = styled.div`
 `;
 const MessagesContainer = styled.div`
-
   overflow: auto; 
   display: flex; 
   max-height: 10vh;
@@ -29,7 +34,14 @@ const MessagesContainer = styled.div`
 const Container = styled.div`
 `;
 
-export const Chat: FC = memo(function Chat() {
+interface ChatProps {
+  canRestart: boolean;
+  doRestart: () => any;
+}
+
+export const Chat = function Chat({
+   canRestart, doRestart
+}: ChatProps) {
   const { chatMessages, sendTextChatMessage } = useChat();
   const [messageToSend, setMessageToSend] = useState<string>('');
   const formRef = useRef<HTMLFormElement>();
@@ -86,7 +98,8 @@ export const Chat: FC = memo(function Chat() {
           onKeyDown={handleTextAreaKeyDown}
         />
         <MessageButton type="submit">Send</MessageButton>
+        {canRestart && <MessageButton onClick={doRestart}>Restart</MessageButton>}
       </MessageForm>
     </Container>
   );
-});
+};

@@ -1,11 +1,10 @@
-import React, { useState, memo, FC } from 'react';
+import React, { useState, memo, FC, useEffect } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { ChessBoard } from './components/Chess/Chess';
-import * as ChessJS from "chess.js";
 import { HostOrSlave } from './components/HostOrSlave/HostOrSlave';
 import { Host } from './components/Host/Host';
 import { Slave } from './components/Slave/Slave';
@@ -60,17 +59,23 @@ const TextContainer = styled.div`
     width: 70%;
   }
 `;
-const Chess = typeof ChessJS === "function" ? ChessJS : ChessJS.Chess;
-const game = new Chess();
 const App: FC = memo(function App() {
+  const GAME_START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
   const { mode, isConnected } = useChat();
   const [isModalOpen, setModalOpen] = useState(false);
-  const [fen, setFen] = useState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+  const [fen, setFen] = useState(GAME_START_FEN);
   
   useChatPeerConnectionSubscription((a: string) => {
-    game.load(a);
     setFen(a);
   });
+  
+  useEffect(() => {
+    if(!isConnected){
+      setFen(GAME_START_FEN)
+    }
+  }, [setFen, isConnected]);
+  
+
   return (
     <Wrapper>
       <Header onClickButton={() => setModalOpen(true)} hideButton={isConnected}/>
@@ -91,12 +96,12 @@ const App: FC = memo(function App() {
           </FlexContainer>
           <Modal
             style={{content: {
-              height: "50%", 
+              height: !mode ? "50%": "auto",
               top: '50%',
               left: '50%',
               right: 'auto',
               bottom: 'auto',
-              padding: '3vh 3vh',
+              padding: '3vh 7vh',
               marginRight: '-50%',
               transform: 'translate(-50%, -50%)'}}}
             isOpen={isModalOpen}
@@ -112,7 +117,7 @@ const App: FC = memo(function App() {
       }
       {mode && isConnected && 
         <InnerWrapper>
-          <ChessBoard game={game} fen={fen} setFen={setFen} orientation={mode === PEER_CONNECTION_MODE.HOST ? "white" : "black"} options={false} position={fen}/>
+          <ChessBoard fen={fen} setFen={setFen} orientation={mode === PEER_CONNECTION_MODE.HOST ? "white" : "black"}/>
         </InnerWrapper>
       }
       <Footer />
@@ -121,8 +126,3 @@ const App: FC = memo(function App() {
 });
 
 export default App;
-
-// {!mode && <HostOrSlave />}
-// {mode === PEER_CONNECTION_MODE.HOST && !isConnected && <Host />}
-// {mode === PEER_CONNECTION_MODE.SLAVE && !isConnected && <Slave />}
-// {mode && isConnected && <Chat />}
